@@ -4,14 +4,14 @@
   en: 7a5ea56b185fed50
   zh: d712b0ee3d454a0c
 /reading-collection:
-  en: 47214b21f96ee6bb
-  zh: b525fb473bb9b5f9
+  en: 966b5e0395c22ad3
+  zh: 84d9306cced5a8fb
 /reading-collection/summary:
-  en: 51af1fbeb157b452
-  zh: 54d88885e8ecf25e
+  en: 423593e740cd9455
+  zh: c836a2308d973054
 /reading-collection/table-of-contents:
-  en: 122f0d41696980b1
-  zh: 196639db54962a64
+  en: ade821c66fd2249d
+  zh: 9da0811f8266d09b
 /reading-collection/use-this-package:
   en: a03703e9342dc361
   zh: 7085a60ad0fcf068
@@ -22,8 +22,11 @@
   en: 130216ec6aa59920
   zh: 80bfa7e813d7d2aa
 /reading-collection/known-limitations-and-deferred-work:
-  en: a56c08fda12fe915
-  zh: 56d3f33b23f8517f
+  en: 84a2db26cebb539b
+  zh: ec4e618afa9d3143
+/reading-collection/community-and-contribution:
+  en: d85429850bb64763
+  zh: 16a301e0560bf748
 /reading-collection/dev-note:
   en: b75c8458928b72b9
   zh: 003ba4e17b4b5269

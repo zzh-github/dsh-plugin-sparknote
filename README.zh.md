@@ -5,11 +5,15 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 
 # 阅读收藏
 
-[English](README.md) | 中文
+[中文](README.zh.md) | [English](README.md)
+
+> **兼容版本：** 插件 `0.1.0` 要求 **DSH `0.2.1-rc.2` · Web 端**。
+>
+> `package.json` 中的 `engines.dsh` 精确限定此版本。其他 DSH 版本（包括更新版本）及桌面端安装尚未验证。
 
 ## 概述
 
-阅读回复时直接划线，读完后将整条回复与全部标记一起收藏。划线在收藏前就会自动保存。收藏夹保留回复副本，原会话删除后仍可阅读。这个可选 bundle 支持 DSH 0.2.1-rc.2 Web。
+阅读回复时直接划线，读完后将整条回复与全部标记一起收藏。划线在收藏前就会自动保存。收藏夹保留回复副本，原会话删除后仍可阅读。这个可选 bundle 为你的 Web profile 添加收藏夹。
 
 ## 目录
 
@@ -17,6 +21,7 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 - [实现](#understand-the-implementation)
 - [模型体验](#model-experience)
 - [已知限制与后续工作](#known-limitations-and-deferred-work)
+- [社区与贡献](#community-and-contribution)
 - [开发备注](#dev-note)
 
 <a id="use-this-package"></a>
@@ -33,7 +38,6 @@ pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh
 主机提交成功后，界面才会显示已保存。操作失败会保留已有数据，并提供重试。数据使用 profile 配置的存储提供方，保存在 Harness 主目录下的 `reading_collection` 存储域中。卸载 bundle 会移除界面，不会删除数据。
 
 开发插件时，在此目录运行 `pnpm install`、`pnpm run typecheck`、`pnpm test` 和 `pnpm run pack:bundle`。bundle 有自己的锁文件，不修改 Harness 工作区的依赖关系。
-
 
 此目录是独立的 Git 仓库。插件的 Git 操作在此目录运行，Harness 的 Git 操作在 DSH 源码目录运行。运行 `pnpm run prepare:smoke --dsh-root D:/00-code/DSH` 可准备无密钥的录制会话检查；省略 `--dsh-root` 时使用并列的 `DSH` 目录。脚本输出隔离的测试路径，不会启动服务器。
 
@@ -56,6 +60,11 @@ Profile 补丁挂载一个主机插件和对应的浏览器贡献。主机验证
 ## 已知限制与后续工作
 
 仅支持带标准操作行的已完成文字回复。不支持流式生成中的回复、思考过程、图片、自由手绘或跨回复选区。文字高亮需要支持 CSS Custom Highlight 的新版浏览器。DOM 适配器限定于声明的 DSH 版本；桌面端安装尚未验证。其他浏览器窗口在获得焦点时刷新收藏；首版不包含多窗口实时更新和收藏导出。打开来源会返回原对话，不会自动翻页到具体历史消息。
+
+<a id="community-and-contribution"></a>
+## 社区与贡献
+
+这是独立维护的社区插件。DSH [贡献指南](https://github.com/deepseek-ai/deepseek-harness/blob/master/CONTRIBUTING.zh.md)建议插件作者为 GitHub 仓库添加 [`dsh-plugin`](https://github.com/topics/dsh-plugin) 话题，方便其他人发现项目。插件问题与改进建议请提交到[本仓库的 Issues](https://github.com/zzh-github/dsh-plugin-sparknote/issues)。
 
 <a id="dev-note"></a>
 ## 开发备注
