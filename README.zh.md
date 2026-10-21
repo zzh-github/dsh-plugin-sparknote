@@ -7,7 +7,7 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 
 [中文](README.zh.md) | [English](README.md)
 
-> **兼容版本：** 插件 `0.1.0` 要求 **DSH `0.2.1-rc.2` · Web 端**。
+> **兼容版本：** 插件 `0.1.1` 要求 **DSH `0.2.1-rc.2` · Web 端**。
 >
 > `package.json` 中的 `engines.dsh` 精确限定此版本。其他 DSH 版本（包括更新版本）及桌面端安装尚未验证。
 
@@ -17,6 +17,7 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 
 ## 目录
 
+- [效果展示](#screenshots)
 - [使用](#use-this-package)
 - [实现](#understand-the-implementation)
 - [模型体验](#model-experience)
@@ -24,16 +25,33 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 - [社区与贡献](#community-and-contribution)
 - [开发备注](#dev-note)
 
+<a id="screenshots"></a>
+## 效果展示
+
+以下截图使用中文界面的本地示例会话；插件同时支持中文与英文。
+
+边读边划线：选中文字并选择颜色，无需先收藏。
+
+![收藏前在回复中划线并选择颜色](docs/screenshots/highlighting.png)
+
+在收藏夹中，通过对话名称和回复开头识别已保存的内容。
+
+![显示自动生成标题和划线数量的收藏夹](docs/screenshots/collection.png)
+
+打开收藏，同时回看当时的用户问题、完整回复和彩色划线。
+
+![同时保存的用户问题与带划线的回复](docs/screenshots/saved-question.png)
+
 <a id="use-this-package"></a>
 ## 使用
 
-通过插件页面或 CLI，将提供的 `dsh-reading-collection-0.1.0.tgz` 安装到 Web profile，然后重启该 profile。使用并列的 `DSH` 和 `DSH_plugin/reading-collection` 目录时，在 Harness 源码仓库中运行：
+通过插件页面或 CLI，将提供的 `dsh-reading-collection-0.1.1.tgz` 安装到 Web profile，然后重启该 profile。使用并列的 `DSH` 和 `DSH_plugin/reading-collection` 目录时，在 Harness 源码仓库中运行：
 
 ```sh
-pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh-reading-collection-0.1.0.tgz
+pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh-reading-collection-0.1.1.tgz
 ```
 
-在已完成的回复中选中文字，再选择黄色、绿色、蓝色或粉色。点击已有划线可改色或删除。回复下方的图钉按钮会收藏完整 Markdown 和已有划线。从侧栏打开收藏夹，可搜索、重命名、阅读、编辑划线或打开原对话。取消收藏会保留划线草稿。
+在已完成的回复中选中文字，再选择黄色、绿色、蓝色或粉色。点击已有划线可改色或删除。回复下方的五角星按钮默认会把完整 Markdown、已有划线和对应的用户问题一起收藏。默认标题为“对话名称 · 回复开头”，之后可以重命名。从侧栏打开收藏夹，可搜索回复、已保存的问题与划线，重命名收藏、阅读、编辑划线或打开原对话。取消收藏会保留划线草稿。
 
 主机提交成功后，界面才会显示已保存。操作失败会保留已有数据，并提供重试。数据使用 profile 配置的存储提供方，保存在 Harness 主目录下的 `reading_collection` 存储域中。卸载 bundle 会移除界面，不会删除数据。
 
@@ -59,7 +77,7 @@ Profile 补丁挂载一个主机插件和对应的浏览器贡献。主机验证
 <a id="known-limitations-and-deferred-work"></a>
 ## 已知限制与后续工作
 
-仅支持带标准操作行的已完成文字回复。不支持流式生成中的回复、思考过程、图片、自由手绘或跨回复选区。文字高亮需要支持 CSS Custom Highlight 的新版浏览器。DOM 适配器限定于声明的 DSH 版本；桌面端安装尚未验证。其他浏览器窗口在获得焦点时刷新收藏；首版不包含多窗口实时更新和收藏导出。打开来源会返回原对话，不会自动翻页到具体历史消息。
+收藏前需先在当前对话历史中加载对应的用户问题；暂不复制问题中的附件。未保存问题的旧收藏仍可阅读，并显示提示。仅支持带标准操作行的已完成文字回复。不支持流式生成中的回复、思考过程、图片、自由手绘或跨回复选区。文字高亮需要支持 CSS Custom Highlight 的新版浏览器。DOM 适配器限定于声明的 DSH 版本；桌面端安装尚未验证。其他浏览器窗口在获得焦点时刷新收藏；首版不包含多窗口实时更新和收藏导出。打开来源会返回原对话，不会自动翻页到具体历史消息。
 
 <a id="community-and-contribution"></a>
 ## 社区与贡献

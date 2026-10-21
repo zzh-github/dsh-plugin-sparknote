@@ -45,3 +45,7 @@
 .rc-notice { margin-bottom: 16px; font-size: 13px; }
 :root[data-platform="darwin"] .rc-page, [data-platform="darwin"] .rc-page { padding-top: calc(28px + var(--dsh-frame-top-clearance, 0px)); }
 @media (max-width: 480px) { .rc-heading { flex-direction: column; } .rc-tools { gap: 4px; } .rc-toolbar { max-width: calc(100vw - 32px); } }
+.rc-question { box-sizing: border-box; width: 100%; margin-bottom: 28px; padding: 16px 20px; border: 1px solid var(--dsw-alias-border-l3); border-radius: 12px; background: var(--dsw-alias-bg-layer-1); overflow-wrap: anywhere; }
+.rc-question h2 { margin: 0 0 12px; font-size: 14px; font-weight: 500; }
+.rc-answer-heading { margin: 0 auto 12px; font-size: 14px; font-weight: 500; }
+.rc-question > p { font-size: 13px; line-height: 1.6; color: var(--dsw-alias-label-secondary); }

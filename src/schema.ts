@@ -8,6 +8,7 @@ export const sourceSchema = z.object({
   sessionId: identity.brand<'SessionId'>(), messageId: identity.brand<'MessageId'>(),
   nodeKey: z.string().min(1), seq: z.number().int().nonnegative(),
   markdown: z.string(), plainText: z.string(), title: z.string().max(300),
+  question: z.string().optional(),
 })
 export type Source = z.infer<typeof sourceSchema>
 export const anchorSchema = z.object({
@@ -18,6 +19,7 @@ export type Anchor = z.infer<typeof anchorSchema>
 export const highlightSchema = z.object({ id: z.string().uuid(), color: colorSchema, anchor: anchorSchema })
 export type Highlight = z.infer<typeof highlightSchema>
 export const recordSchema = sourceSchema.extend({
+  titleEdited: z.boolean().optional(),
   highlights: z.array(highlightSchema), savedAt: z.number().nullable(), updatedAt: z.number(), revision: z.number().int().nonnegative(),
 })
 export type ReadingRecord = z.infer<typeof recordSchema>

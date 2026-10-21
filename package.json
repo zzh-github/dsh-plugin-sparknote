@@ -1,6 +1,6 @@
 {
   "name": "dsh-reading-collection",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Highlight replies while reading and collect them with their annotations",
   "type": "module",
   "license": "MIT",
@@ -20,6 +20,7 @@
     "cordis.patch.yml",
     "README.md",
     "README.zh.md",
+    "docs/screenshots",
     "LICENSE"
   ],
   "dsh": {

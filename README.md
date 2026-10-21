@@ -7,7 +7,7 @@ description: "Highlight completed DSH replies before collecting their text and a
 
 [中文](README.zh.md) | [English](README.md)
 
-> **Compatibility:** plugin `0.1.0` requires **DSH `0.2.1-rc.2` · Web**.
+> **Compatibility:** plugin `0.1.1` requires **DSH `0.2.1-rc.2` · Web**.
 >
 > `package.json` pins `engines.dsh` to this exact version. Other DSH versions, including newer releases, and Desktop installation have not been verified.
 
@@ -17,6 +17,7 @@ Highlight replies while reading, then collect the whole reply with all its marks
 
 ## Table of Contents
 
+- [Screenshots](#screenshots)
 - [Use this package](#use-this-package)
 - [Understand the implementation](#understand-the-implementation)
 - [Model Experience](#model-experience)
@@ -24,16 +25,33 @@ Highlight replies while reading, then collect the whole reply with all its marks
 - [Community and contribution](#community-and-contribution)
 - [Dev Note](#dev-note)
 
+<a id="screenshots"></a>
+## Screenshots
+
+These screenshots show the Chinese UI in a local sample conversation; the plugin supports both Chinese and English.
+
+Highlight as you read: select text and choose a color before collecting.
+
+![Highlight text in a reply before collecting](docs/screenshots/highlighting.png)
+
+Browse saved replies by conversation name and reply opening.
+
+![Collection with generated titles and highlight counts](docs/screenshots/collection.png)
+
+Open a collection to read the saved user question, reply, and colored highlights together.
+
+![Saved user question and annotated reply](docs/screenshots/saved-question.png)
+
 <a id="use-this-package"></a>
 ## Use this package
 
-Install the supplied `dsh-reading-collection-0.1.0.tgz` through the Plugins page or the CLI for your Web profile, then restart that profile. With sibling `DSH` and `DSH_plugin/reading-collection` directories, run from the Harness checkout:
+Install the supplied `dsh-reading-collection-0.1.1.tgz` through the Plugins page or the CLI for your Web profile, then restart that profile. With sibling `DSH` and `DSH_plugin/reading-collection` directories, run from the Harness checkout:
 
 ```sh
-pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh-reading-collection-0.1.0.tgz
+pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh-reading-collection-0.1.1.tgz
 ```
 
-Select text in a completed reply and choose yellow, green, blue, or pink. Click an existing highlight to change or remove it. The pin action below the reply collects its full Markdown and existing highlights. Open Collection in the sidebar to search, rename, read, edit highlights, or open the source conversation. Removing a collection keeps its highlight draft.
+Select text in a completed reply and choose yellow, green, blue, or pink. Click an existing highlight to change or remove it. The five-point star below the reply collects its full Markdown, existing highlights, and the corresponding user question by default. The default title combines the conversation name with the opening of the reply; you can rename it afterward. Open Collection in the sidebar to search reply text, saved questions, and highlights, rename a collection, read, edit highlights, or open the source conversation. Removing a collection keeps its highlight draft.
 
 Changes show as saved only after the Host commits them. A failed operation keeps existing data and offers Retry. Data is stored in the `reading_collection` storage domain under the Harness home, using the profile's configured storage provider. Unloading the bundle removes its UI without deleting its data.
 
@@ -59,7 +77,7 @@ This bundle contributes no model tools or prompt content. Collections and annota
 <a id="known-limitations-and-deferred-work"></a>
 ## Known Limitations and Deferred Work
 
-Only completed text replies with a standard action row are supported. Streaming replies, reasoning, images, freehand drawing, and cross-message selections are excluded. Text highlighting needs a current browser with CSS Custom Highlight support. The DOM adapter is pinned to the declared DSH version; Desktop installation is unverified. Other browser windows refresh their collection when focused; live multi-window updates and collection export are not included. Opening the source returns to its conversation, without paging to the exact historical message.
+The user question must be loaded in the current Chat history before you can collect its reply. Question attachments are not copied. Older collections without a saved question remain readable and show a notice. Only completed text replies with a standard action row are supported. Streaming replies, reasoning, images, freehand drawing, and cross-message selections are excluded. Text highlighting needs a current browser with CSS Custom Highlight support. The DOM adapter is pinned to the declared DSH version; Desktop installation is unverified. Other browser windows refresh their collection when focused; live multi-window updates and collection export are not included. Opening the source returns to its conversation, without paging to the exact historical message.
 
 <a id="community-and-contribution"></a>
 ## Community and contribution

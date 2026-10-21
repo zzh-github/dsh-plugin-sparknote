@@ -37,7 +37,7 @@ export class ReadingRepository {
       const now = Date.now()
       let record: ReadingRecord
       if (previous !== undefined) record = { ...previous, highlights: [...previous.highlights] }
-      else if ('source' in command) record = { ...command.source, highlights: [], savedAt: null, updatedAt: now, revision: 0 }
+      else if ('source' in command) record = { ...command.source, titleEdited: false, highlights: [], savedAt: null, updatedAt: now, revision: 0 }
       else throw new ReadingError('record-missing')
       switch (command.kind) {
         case 'highlight': {
@@ -52,8 +52,19 @@ export class ReadingRepository {
           record.highlights = record.highlights.map(item => item.id === command.id ? { ...item, color: command.color } : item)
           break
         case 'remove-highlight': record.highlights = record.highlights.filter(item => item.id !== command.id); break
-        case 'collect': record.savedAt = command.saved ? (record.savedAt ?? now) : null; break
-        case 'rename': record.title = command.title; break
+        case 'collect':
+          if (command.saved) {
+            if (record.markdown !== command.source.markdown) throw new ReadingError('message-changed')
+            if (record.savedAt === null && record.titleEdited !== true) record.title = command.source.title
+            if (command.source.question !== undefined) record.question = command.source.question
+            record.savedAt ??= now
+          } else {
+            // Legacy records have no title ownership flag; keep their titles on recollection.
+            record.titleEdited ??= true
+            record.savedAt = null
+          }
+          break
+        case 'rename': record.title = command.title; record.titleEdited = true; break
         default: assertNever(command)
       }
       record.revision += 1
