@@ -1,0 +1,29 @@
+# Bilingual section hashes for README.md and README.zh.md.
+# Update both languages together when editing their paired sections.
+/:
+  en: 7a5ea56b185fed50
+  zh: d712b0ee3d454a0c
+/reading-collection:
+  en: 47214b21f96ee6bb
+  zh: b525fb473bb9b5f9
+/reading-collection/summary:
+  en: 51af1fbeb157b452
+  zh: 54d88885e8ecf25e
+/reading-collection/table-of-contents:
+  en: 122f0d41696980b1
+  zh: 196639db54962a64
+/reading-collection/use-this-package:
+  en: a03703e9342dc361
+  zh: 7085a60ad0fcf068
+/reading-collection/understand-the-implementation:
+  en: d804e967de80b06e
+  zh: a619aaec37b1bc4f
+/reading-collection/model-experience:
+  en: 130216ec6aa59920
+  zh: 80bfa7e813d7d2aa
+/reading-collection/known-limitations-and-deferred-work:
+  en: a56c08fda12fe915
+  zh: 56d3f33b23f8517f
+/reading-collection/dev-note:
+  en: b75c8458928b72b9
+  zh: 003ba4e17b4b5269
