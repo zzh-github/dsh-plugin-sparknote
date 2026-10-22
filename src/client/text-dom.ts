@@ -1,5 +1,5 @@
 /** DSH rc.2 DOM adapter; highlights never insert nodes into React-owned Markdown. */
-import { makeAnchor, recordKey, resolveAnchor, type Source, type Color, type Anchor, type ReadingRecord } from '../schema.ts'
+import { makeAnchor, recordKey, resolveAnchor, type Source, type Color, type Anchor, type SparkNoteRecord } from '../schema.ts'
 
 interface TextPiece { node: Text; start: number; end: number }
 export interface TextIndex { text: string; pieces: TextPiece[] }
@@ -42,7 +42,7 @@ type HighlightWindow = Window & Pick<typeof globalThis, 'Element' | 'MutationObs
 /** Owns text bindings, native highlighting, and input listeners for one browser plugin instance. */
 export class TextHighlighter {
   private readonly bindings = new Map<HTMLElement, Binding>()
-  private records = new Map<string, ReadingRecord>()
+  private records = new Map<string, SparkNoteRecord>()
   private frame: number | undefined
   private disposed = false
   private readonly win: HighlightWindow
@@ -73,7 +73,7 @@ export class TextHighlighter {
   /** @param element Detached contribution. */
   unbind(element: HTMLElement): void { this.bindings.delete(element); this.observeRoots(); this.schedulePaint() }
   /** @param records Latest committed Host records. */
-  update(records: readonly ReadingRecord[]): void { this.records = new Map(records.map(record => [recordKey(record), record])); this.schedulePaint() }
+  update(records: readonly SparkNoteRecord[]): void { this.records = new Map(records.map(record => [recordKey(record), record])); this.schedulePaint() }
 
   private observeRoots(): void {
     this.observer.disconnect()
@@ -83,7 +83,7 @@ export class TextHighlighter {
   }
 
   private readonly selectionChanged = (): void => {
-    if (!this.supported || this.document.activeElement?.closest('[data-reading-toolbar]')) return
+    if (!this.supported || this.document.activeElement?.closest('[data-sparknote-toolbar]')) return
     const selection = this.document.getSelection()
     if (selection === null || selection.isCollapsed || selection.rangeCount !== 1) { this.publish(null); return }
     const range = selection.getRangeAt(0)
@@ -104,7 +104,7 @@ export class TextHighlighter {
   }
 
   private readonly clicked = (event: MouseEvent): void => {
-    if (!(event.target instanceof this.win.Element) || event.target.closest('button,a,[data-reading-toolbar]') !== null) return
+    if (!(event.target instanceof this.win.Element) || event.target.closest('button,a,[data-sparknote-toolbar]') !== null) return
     if (!this.document.getSelection()?.isCollapsed) return
     const caretDocument = this.document as Document & { caretRangeFromPoint?: (x: number, y: number) => Range | null; caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node; offset: number } | null }
     const position = caretDocument.caretPositionFromPoint?.(event.clientX, event.clientY)
@@ -144,7 +144,7 @@ export class TextHighlighter {
         if (range !== undefined) ranges[highlight.color].push(range)
       }
     }
-    for (const color of Object.keys(ranges) as Color[]) registry.set(`reading-${color}`, new Constructor(...ranges[color]))
+    for (const color of Object.keys(ranges) as Color[]) registry.set(`sparknote-${color}`, new Constructor(...ranges[color]))
   }
   /** Remove all native listeners, observers, animation frames, and highlight registrations. */
   dispose(): void {
@@ -156,7 +156,7 @@ export class TextHighlighter {
     this.document.removeEventListener('scroll', this.scrolled, true)
     this.win.removeEventListener('resize', this.scrolled)
     if (this.frame !== undefined) this.win.cancelAnimationFrame(this.frame)
-    for (const color of ['yellow', 'green', 'blue', 'pink']) this.win.CSS?.highlights?.delete(`reading-${color}`)
+    for (const color of ['yellow', 'green', 'blue', 'pink']) this.win.CSS?.highlights?.delete(`sparknote-${color}`)
     this.bindings.clear()
     this.publish(null)
   }

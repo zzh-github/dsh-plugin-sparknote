@@ -12,11 +12,11 @@ if (harness.name !== '@deepseek-ai/dsh-root') throw new Error('Expected a DSH so
 const { sessionDir } = await import(pathToFileURL(join(repo, 'packages/session/session-persistence-jsonl/src/format.ts')).href)
 const scratchParent = join(repo, '.playwright-mcp')
 await mkdir(scratchParent, { recursive: true })
-const run = await mkdtemp(join(scratchParent, 'reading-collection-'))
+const run = await mkdtemp(join(scratchParent, 'sparknote-'))
 const home = join(run, 'home'), workspace = join(run, 'workspace')
 await mkdir(workspace, { recursive: true })
 const rows = (await readFile(join(repo, 'snapshots/web/present/session.v4.jsonl'), 'utf8')).trim().split('\n').map(JSON.parse)
-const id = 'reading-collection-demo'
+const id = 'sparknote-demo'
 const normalized = JSON.parse(JSON.stringify(rows).replaceAll('{{session:1}}', id).replaceAll('{{cwd}}', JSON.stringify(workspace).slice(1, -1)))
 const physical = normalized.map((row, index) => index === 0 ? row : { ...row, seq: index - 1, time: normalized[0].createdAt + index })
 const directory = sessionDir(join(home, 'sessions'), workspace, id)

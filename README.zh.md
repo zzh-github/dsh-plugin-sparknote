@@ -3,7 +3,7 @@ kind: package-bundle
 description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 ---
 
-# SparkNote · 阅读收藏
+# SparkNote
 
 [中文](README.zh.md) | [English](README.md)
 
@@ -54,7 +54,7 @@ dsh plugin --profile web add https://github.com/zzh-github/dsh-plugin-sparknote/
 
 在已完成的回复中选中文字，再选择黄色、绿色、蓝色或粉色。点击已有划线可改色或删除。回复下方的五角星按钮默认会把完整 Markdown、已有划线和对应的用户问题一起收藏。默认标题为“对话名称 · 回复开头”，之后可以重命名。从侧栏打开收藏夹，可搜索回复、已保存的问题与划线，重命名收藏、阅读、编辑划线或打开原对话。收藏中的彩色划线直接显示在回复原文中，也支持跨 Markdown 块的选区；下方“管理划线”默认收起，需要查看摘录或使用管理控件时再展开。取消收藏会保留划线草稿。
 
-主机提交成功后，界面才会显示已保存。操作失败会保留已有数据，并提供重试。数据使用 profile 配置的存储提供方，保存在 Harness 主目录下的 `reading_collection` 存储域中。卸载 bundle 会移除界面，不会删除数据。
+主机提交成功后，界面才会显示已保存。操作失败会保留已有数据，并提供重试。数据使用 profile 配置的存储提供方，保存在 Harness 主目录下。卸载 bundle 会移除界面，不会删除数据。
 
 开发插件时，在此目录运行 `pnpm install`、`pnpm run typecheck`、`pnpm test` 和 `pnpm run pack:bundle`。bundle 有自己的锁文件，不修改 Harness 工作区的依赖关系。
 
@@ -100,4 +100,4 @@ Profile 补丁挂载一个主机插件和对应的浏览器贡献。主机验证
 <a id="dev-note"></a>
 ## 开发备注
 
-发布包名称是 `dsh-sparknote`。内部插件 ID `reading-collection` 与存储域 `reading_collection` 保持原名，供已有本地数据继续读取。
+`main` 分支已将内部插件 ID 和存储域统一为 `sparknote`。已发布的 v0.1.2 安装包尚未包含此改动；未来发布的新版本会从空收藏夹开始，不迁移旧本地构建留下的测试记录。

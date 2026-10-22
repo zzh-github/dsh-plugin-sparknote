@@ -11,7 +11,7 @@ import type { SessionId } from '@deepseek-ai/dsh-client-connection/client'
 import { z } from 'zod'
 import type { ObservableSnapshot } from '@deepseek-ai/dsh-client-store'
 import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
-import { recordKey, type Color, type Command, type ReadingRecord, type Source } from '../schema.ts'
+import { recordKey, type Color, type Command, type SparkNoteRecord, type Source } from '../schema.ts'
 import { TextHighlighter, type SelectionTarget } from './text-dom.ts'
 import { LibraryModel, type LibraryState } from './model.ts'
 import { en, zh, type CopyKey } from './locales.ts'
@@ -19,8 +19,8 @@ import { CollectionIcon, CollectionPanel, ReplyAction, SelectionOverlay } from '
 import styles from './styles.css'
 
 export const inject = ['slots', 'locale', 'connection', 'layout', 'uiWorkspace']
-const NS = 'readingCollection'
-const PANEL = 'reading-collection' as MainPanelId
+const NS = 'sparknote'
+const PANEL = 'sparknote' as MainPanelId
 
 export interface ActionFace {
   hooks: { library: ObservableSnapshot<LibraryState> }
@@ -30,7 +30,7 @@ export interface ActionFace {
 }
 export interface LibraryFace extends ActionFace {
   load(): Promise<void>
-  openSource(record: ReadingRecord): void
+  openSource(record: SparkNoteRecord): void
   supported: boolean
 }
 export interface OverlayFace extends Pick<ActionFace, 'hooks'> {
@@ -42,7 +42,7 @@ export interface OverlayFace extends Pick<ActionFace, 'hooks'> {
   dismissNotice(): void
 }
 declare module '@deepseek-ai/dsh-client-ui-slots' {
-  interface LocaleNamespaceMap { readingCollection: CopyKey }
+  interface LocaleNamespaceMap { sparknote: CopyKey }
 }
 
 /** @param ctx Browser dependencies; every registration and native resource is released on unload. */
@@ -50,8 +50,8 @@ export function apply(ctx: Context): void {
   ctx.effect(() => ctx.locale.register(NS, { en, zh }))
   const replySchema = z.union([z.object({ ok: z.literal(true), value: z.unknown() }), z.object({ ok: z.literal(false), error: z.object({ code: z.string(), message: z.string(), details: z.object({}) }) })])
   const model = new LibraryModel({ call: async (_channel, endpoint, payload, signal) => {
-    const response = await fetch(new URL('api/reading-collection', document.baseURI), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ operation: endpoint, payload }), signal })
-    if (!response.ok) throw new Error(`Reading Collection HTTP ${response.status}`)
+    const response = await fetch(new URL('api/sparknote', document.baseURI), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ operation: endpoint, payload }), signal })
+    if (!response.ok) throw new Error(`SparkNote HTTP ${response.status}`)
     return replySchema.parse(await response.json())
   } })
   const selection = createSnapshotStore<SelectionTarget | null>(null)
@@ -66,7 +66,7 @@ export function apply(ctx: Context): void {
     supported: highlighter.supported,
     openSource: record => {
       try { ctx.uiWorkspace.openSession(String(record.sessionId) as SessionId) }
-      catch (error) { console.error('Reading Collection source navigation failed', error); model.report('sourceError') }
+      catch (error) { console.error('SparkNote source navigation failed', error); model.report('sourceError') }
     },
   }
   const overlay: OverlayFace = {
@@ -85,7 +85,7 @@ export function apply(ctx: Context): void {
   }
   ctx.effect(() => {
     const style = document.createElement('style')
-    style.dataset.readingCollection = ''
+    style.dataset.sparknote = ''
     style.textContent = styles
     document.head.append(style)
     return () => { style.remove() }
@@ -94,8 +94,8 @@ export function apply(ctx: Context): void {
   ctx.effect(() => { const refresh = (): void => { void model.load() }; window.addEventListener('focus', refresh); return () => { window.removeEventListener('focus', refresh) } })
   ctx.on('connection/reset', () => { void model.load() })
   ctx.effect(() => () => { highlighter.dispose(); model.dispose() })
-  ctx.slots.inject('conversation.chat.assistant-actions', () => ctx.slots.register({ name: 'conversation.chat.assistant-actions', id: 'reading-collection.collect', locale: NS, inject: () => face }, ReplyAction))
-  ctx.slots.inject('shell.overlay', () => ctx.slots.register({ name: 'shell.overlay', id: 'reading-collection.toolbar', locale: NS, inject: () => overlay }, SelectionOverlay))
+  ctx.slots.inject('conversation.chat.assistant-actions', () => ctx.slots.register({ name: 'conversation.chat.assistant-actions', id: 'sparknote.collect', locale: NS, inject: () => face }, ReplyAction))
+  ctx.slots.inject('shell.overlay', () => ctx.slots.register({ name: 'shell.overlay', id: 'sparknote.toolbar', locale: NS, inject: () => overlay }, SelectionOverlay))
   ctx.slots.inject('sidebar.panellist', () => ctx.slots.register({ name: 'sidebar.panellist', id: PANEL, label: () => ctx.locale.bind(NS)('panel'), order: 20 }, CollectionIcon))
   ctx.slots.inject('main', () => ctx.slots.register({ name: 'main', key: PANEL, locale: NS, inject: () => face }, CollectionPanel))
   void model.load()

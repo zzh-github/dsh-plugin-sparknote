@@ -54,7 +54,7 @@ dsh plugin --profile web add https://github.com/zzh-github/dsh-plugin-sparknote/
 
 Select text in a completed reply and choose yellow, green, blue, or pink. Click an existing highlight to change or remove it. The five-point star below the reply collects its full Markdown, existing highlights, and the corresponding user question by default. The default title combines the conversation name with the opening of the reply; you can rename it afterward. Open Collection in the sidebar to search reply text, saved questions, and highlights, rename a collection, read, edit highlights, or open the source conversation. Saved replies show colored highlights directly on their original text, including selections across Markdown blocks. The Manage highlights section stays collapsed until you open it to browse quotes or use its controls. Removing a collection keeps its highlight draft.
 
-Changes show as saved only after the Host commits them. A failed operation keeps existing data and offers Retry. Data is stored in the `reading_collection` storage domain under the Harness home, using the profile's configured storage provider. Unloading the bundle removes its UI without deleting its data.
+Changes show as saved only after the Host commits them. A failed operation keeps existing data and offers Retry. Data is stored under the Harness home using the profile's configured storage provider. Unloading the bundle removes its UI without deleting its data.
 
 For plugin development, run `pnpm install`, `pnpm run typecheck`, `pnpm test`, and `pnpm run pack:bundle` in this directory. The bundle has its own lockfile and does not modify the Harness workspace dependency graph.
 
@@ -100,4 +100,4 @@ This is an independently maintained community plugin. The DSH [contribution guid
 <a id="dev-note"></a>
 ## Dev Note
 
-The published package is named `dsh-sparknote`. The internal plugin ID `reading-collection` and storage domain `reading_collection` retain their existing names so previous local data remains addressable.
+The `main` branch now uses `sparknote` for its internal plugin ID and storage domain. This change is not in the published v0.1.2 package; a future release will start with an empty collection. Test records from earlier local builds are not migrated.

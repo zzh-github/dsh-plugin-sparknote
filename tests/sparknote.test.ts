@@ -2,14 +2,14 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
-import { makeAnchor, resolveAnchor, recordKey, sourceSchema, recordSchema, commandSchema, type ReadingRecord } from '../src/schema.ts'
-import { ReadingRepository, type RecordTable } from '../src/repository.ts'
+import { makeAnchor, resolveAnchor, recordKey, sourceSchema, recordSchema, commandSchema, type SparkNoteRecord } from '../src/schema.ts'
+import { SparkNoteRepository, type RecordTable } from '../src/repository.ts'
 
 const source = sourceSchema.parse({ sessionId: 'session-one', messageId: 'message-one', nodeKey: 'assistant:1', seq: 7, markdown: '**Useful** idea', plainText: 'Useful idea', title: 'Useful idea' })
 function tableFixture() {
-  const records = new Map<string, ReadingRecord>()
+  const records = new Map<string, SparkNoteRecord>()
   const table: RecordTable = { get: key => records.get(key), entries: () => records.entries(), put: async (key, value) => { records.set(key, structuredClone(value)) } }
-  return { records, table, repository: new ReadingRepository(table) }
+  return { records, table, repository: new SparkNoteRepository(table) }
 }
 const mark = () => ({ kind: 'highlight' as const, source, highlight: { id: randomUUID(), color: 'yellow' as const, anchor: makeAnchor(source.plainText, 0, 6) } })
 
@@ -21,7 +21,7 @@ test('highlights survive collection, recoloring, uncollection, and reopening', a
   assert.equal(draft.highlights.length, 1)
   const saved = await repository.mutate({ kind: 'collect', source, saved: true })
   assert.equal(typeof saved.savedAt, 'number')
-  const reopened = new ReadingRepository(table)
+  const reopened = new SparkNoteRepository(table)
   assert.deepEqual(await reopened.list(), [saved])
   await reopened.mutate({ kind: 'recolor', key: recordKey(source), id: command.highlight.id, color: 'blue' })
   const removed = await reopened.mutate({ kind: 'collect', source, saved: false })
@@ -39,7 +39,7 @@ test('overlapping calls wait for durable writes and preserve both clients’ hig
   const barrier = new Promise<void>(resolve => { release = resolve })
   const started = new Promise<void>(resolve => { entered = resolve })
   let writes = 0
-  const repository = new ReadingRepository({ ...table, put: async (key, value) => { writes += 1; if (writes === 1) { entered(); await barrier }; await table.put(key, value) } })
+  const repository = new SparkNoteRepository({ ...table, put: async (key, value) => { writes += 1; if (writes === 1) { entered(); await barrier }; await table.put(key, value) } })
   const first = repository.mutate(mark())
   await started
   const second = repository.mutate(mark())
@@ -52,7 +52,7 @@ test('overlapping calls wait for durable writes and preserve both clients’ hig
 test('failed persistence retains old state and does not poison the write queue', async () => {
   const { table, records } = tableFixture()
   let fail = true
-  const repository = new ReadingRepository({ ...table, put: async (key, value) => { if (fail) throw new Error('disk full'); await table.put(key, value) } })
+  const repository = new SparkNoteRepository({ ...table, put: async (key, value) => { if (fail) throw new Error('disk full'); await table.put(key, value) } })
   await assert.rejects(repository.mutate(mark()), /disk full/)
   assert.equal(records.size, 0)
   fail = false
@@ -98,7 +98,7 @@ test('collecting an existing highlight draft saves the current question and conv
   assert.equal(saved.question, updatedSource.question)
   assert.equal(saved.markdown, draft.markdown)
   assert.deepEqual(saved.highlights, draft.highlights)
-  const reopened = new ReadingRepository(table)
+  const reopened = new SparkNoteRepository(table)
   const persisted = (await reopened.list())[0]!
   assert.equal(persisted.question, updatedSource.question)
   const actual = { title: persisted.title, question: persisted.question, markdown: persisted.markdown, highlights: persisted.highlights.map(({ color, anchor }) => ({ color, quote: anchor.quote, start: anchor.start, end: anchor.end })) }
@@ -121,7 +121,7 @@ test('legacy collections remain readable and keep their titles on recollection',
   const legacy = { ...source, title: 'Previously chosen title', highlights: [], savedAt: 1, updatedAt: 1, revision: 1 }
   assert.equal(recordSchema.parse(legacy).question, undefined)
   records.set(recordKey(source), legacy)
-  const repository = new ReadingRepository(table)
+  const repository = new SparkNoteRepository(table)
   assert.equal((await repository.list())[0]?.question, undefined)
   await repository.mutate({ kind: 'collect', source, saved: false })
   const saved = await repository.mutate({ kind: 'collect', source: { ...source, title: 'New default title', question: 'Original question' }, saved: true })

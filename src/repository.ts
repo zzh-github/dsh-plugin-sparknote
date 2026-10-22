@@ -1,60 +1,60 @@
 /** Ordered annotation mutations over a durable message table. */
-import { recordKey, type Command, type ReadingRecord } from './schema.ts'
+import { recordKey, type Command, type SparkNoteRecord } from './schema.ts'
 
 /** Durable table supplied by the Harness storage domain. */
 export interface RecordTable {
   /** @param key Message pair identity. @returns Committed record, or absence. */
-  get(key: string): ReadingRecord | undefined
+  get(key: string): SparkNoteRecord | undefined
   /** @returns Snapshot of committed record pairs. */
-  entries(): IterableIterator<[string, ReadingRecord]>
+  entries(): IterableIterator<[string, SparkNoteRecord]>
   /** @param key Message pair identity. @param value Replacement record. @returns Completion of durable publication. */
-  put(key: string, value: ReadingRecord): Promise<void>
+  put(key: string, value: SparkNoteRecord): Promise<void>
 }
 
 /** Declared mutation failures; failed commands leave the committed record untouched. */
-export class ReadingError extends Error {
+export class SparkNoteError extends Error {
   /** @param code Stable failure discriminator. */
   constructor(readonly code: 'record-missing' | 'invalid-anchor' | 'message-changed' | 'highlight-missing') { super(code) }
 }
 
 /** Serializes all readers and writers against committed storage state. */
-export class ReadingRepository {
+export class SparkNoteRepository {
   private tail: Promise<unknown> = Promise.resolve()
   /** @param table Authoritative durable table. */
   constructor(private readonly table: RecordTable) {}
 
   /** @returns Committed records after all earlier mutations settle. */
-  async list(): Promise<ReadingRecord[]> {
+  async list(): Promise<SparkNoteRecord[]> {
     await this.tail
     return Array.from(this.table.entries(), ([, value]) => value)
   }
 
   /** @param command Validated change. @returns Record after durable commit; failed writes preserve the previous value. */
-  mutate(command: Command): Promise<ReadingRecord> {
+  mutate(command: Command): Promise<SparkNoteRecord> {
     const pending = this.tail.then(async () => {
       const key = 'source' in command ? recordKey(command.source) : command.key
       const previous = this.table.get(key)
       const now = Date.now()
-      let record: ReadingRecord
+      let record: SparkNoteRecord
       if (previous !== undefined) record = { ...previous, highlights: [...previous.highlights] }
       else if ('source' in command) record = { ...command.source, titleEdited: false, highlights: [], savedAt: null, updatedAt: now, revision: 0 }
-      else throw new ReadingError('record-missing')
+      else throw new SparkNoteError('record-missing')
       switch (command.kind) {
         case 'highlight': {
           const { anchor } = command.highlight
-          if (command.source.plainText.slice(anchor.start, anchor.end) !== anchor.quote) throw new ReadingError('invalid-anchor')
-          if (record.markdown !== command.source.markdown) throw new ReadingError('message-changed')
+          if (command.source.plainText.slice(anchor.start, anchor.end) !== anchor.quote) throw new SparkNoteError('invalid-anchor')
+          if (record.markdown !== command.source.markdown) throw new SparkNoteError('message-changed')
           if (!record.highlights.some(item => item.id === command.highlight.id)) record.highlights.push(command.highlight)
           break
         }
         case 'recolor':
-          if (!record.highlights.some(item => item.id === command.id)) throw new ReadingError('highlight-missing')
+          if (!record.highlights.some(item => item.id === command.id)) throw new SparkNoteError('highlight-missing')
           record.highlights = record.highlights.map(item => item.id === command.id ? { ...item, color: command.color } : item)
           break
         case 'remove-highlight': record.highlights = record.highlights.filter(item => item.id !== command.id); break
         case 'collect':
           if (command.saved) {
-            if (record.markdown !== command.source.markdown) throw new ReadingError('message-changed')
+            if (record.markdown !== command.source.markdown) throw new SparkNoteError('message-changed')
             if (record.savedAt === null && record.titleEdited !== true) record.title = command.source.title
             if (command.source.question !== undefined) record.question = command.source.question
             record.savedAt ??= now
@@ -80,4 +80,4 @@ export class ReadingRepository {
   async drain(): Promise<void> { await this.tail }
 }
 
-function assertNever(value: never): never { throw new Error(`Unknown reading operation: ${String(value)}`) }
+function assertNever(value: never): never { throw new Error(`Unknown SparkNote operation: ${String(value)}`) }

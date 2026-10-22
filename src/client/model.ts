@@ -1,11 +1,11 @@
 /** Client mirror of committed Host data; mutations preserve unrelated concurrent edits. */
 import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
 import type { ClientConnectionRpc } from '@deepseek-ai/dsh-client-connection/client'
-import { recordSchema, recordKey, type Command, type ReadingRecord } from '../schema.ts'
+import { recordSchema, recordKey, type Command, type SparkNoteRecord } from '../schema.ts'
 import type { CopyKey } from './locales.ts'
 
 export interface LibraryState {
-  records: readonly ReadingRecord[]
+  records: readonly SparkNoteRecord[]
   status: 'loading' | 'ready' | 'error'
   pending: number
   notice: { id: number; key: CopyKey; failed: boolean } | null
@@ -29,13 +29,13 @@ export class LibraryModel {
     if (this.disposed) return
     const generation = ++this.generation
     try {
-      const result = await this.rpc.call('/reading-collection', 'list', {}, this.abort.signal)
+      const result = await this.rpc.call('/sparknote', 'list', {}, this.abort.signal)
       if (!result.ok) throw new Error(result.error.message)
       const records = recordSchema.array().parse(result.value)
       if (!this.disposed && generation === this.generation) this.state.update(state => { state.records = records; state.status = 'ready' })
     } catch (error) {
       if (!this.disposed && generation === this.generation) {
-        console.error('Reading Collection load failed', error)
+        console.error('SparkNote load failed', error)
         this.state.update(state => { state.status = 'error' })
       }
     }
@@ -47,7 +47,7 @@ export class LibraryModel {
     this.state.update(state => { state.pending += 1 })
     const pending = this.tail.then(async () => {
       try {
-        const result = await this.rpc.call('/reading-collection', 'mutate', command, this.abort.signal)
+        const result = await this.rpc.call('/sparknote', 'mutate', command, this.abort.signal)
         if (!result.ok) throw new Error(result.error.message)
         const record = recordSchema.parse(result.value)
         if (this.disposed) return false
@@ -64,7 +64,7 @@ export class LibraryModel {
         return true
       } catch (error) {
         if (!this.disposed) {
-          console.error('Reading Collection save failed', error)
+          console.error('SparkNote save failed', error)
           this.retry = () => this.change(command, notice)
           this.state.update(state => { state.notice = { id: ++this.noticeId, key: 'saveError', failed: true } })
         }

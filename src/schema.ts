@@ -22,7 +22,7 @@ export const recordSchema = sourceSchema.extend({
   titleEdited: z.boolean().optional(),
   highlights: z.array(highlightSchema), savedAt: z.number().nullable(), updatedAt: z.number(), revision: z.number().int().nonnegative(),
 })
-export type ReadingRecord = z.infer<typeof recordSchema>
+export type SparkNoteRecord = z.infer<typeof recordSchema>
 export const commandSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('highlight'), source: sourceSchema, highlight: highlightSchema }),
   z.object({ kind: z.literal('recolor'), key: z.string(), id: z.string().uuid(), color: colorSchema }),
