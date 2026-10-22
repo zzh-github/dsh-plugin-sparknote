@@ -22,6 +22,7 @@ Highlight replies while reading, then collect the whole reply with all its marks
 - [Understand the implementation](#understand-the-implementation)
 - [Model Experience](#model-experience)
 - [Known Limitations and Deferred Work](#known-limitations-and-deferred-work)
+- [Planned Features](#planned-features)
 - [Community and contribution](#community-and-contribution)
 - [Dev Note](#dev-note)
 
@@ -45,10 +46,10 @@ Open a collection to read the saved user question, reply, and colored highlights
 <a id="use-this-package"></a>
 ## Use this package
 
-Install the supplied `dsh-reading-collection-0.1.2.tgz` through the Plugins page or the CLI for your Web profile, then restart that profile. With sibling `DSH` and `DSH_plugin/reading-collection` directories, run from the Harness checkout:
+Install the supplied `dsh-reading-collection-0.1.2.tgz` through the Plugins page or the CLI for your Web profile, then restart that profile. With sibling `DSH` and `DSH_plugin/SparkNote` directories, run from the Harness checkout:
 
 ```sh
-pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh-reading-collection-0.1.2.tgz
+pnpm dsh plugin --profile web add ../DSH_plugin/SparkNote/artifacts/dsh-reading-collection-0.1.2.tgz
 ```
 
 Select text in a completed reply and choose yellow, green, blue, or pink. Click an existing highlight to change or remove it. The five-point star below the reply collects its full Markdown, existing highlights, and the corresponding user question by default. The default title combines the conversation name with the opening of the reply; you can rename it afterward. Open Collection in the sidebar to search reply text, saved questions, and highlights, rename a collection, read, edit highlights, or open the source conversation. Saved replies show colored highlights directly on their original text, including selections across Markdown blocks. The Manage highlights section stays collapsed until you open it to browse quotes or use its controls. Removing a collection keeps its highlight draft.
@@ -78,6 +79,18 @@ This bundle contributes no model tools or prompt content. Collections and annota
 ## Known Limitations and Deferred Work
 
 The user question must be loaded in the current Chat history before you can collect its reply. Question attachments are not copied. Older collections without a saved question remain readable and show a notice. Only completed text replies with a standard action row are supported. Streaming replies, reasoning, images, freehand drawing, and cross-message selections are excluded. Text highlighting needs a current browser with CSS Custom Highlight support. The DOM adapter is pinned to the declared DSH version; Desktop installation is unverified. Other browser windows refresh their collection when focused; live multi-window updates and collection export are not included. Opening the source returns to its conversation, without paging to the exact historical message.
+
+<a id="planned-features"></a>
+## Planned Features
+
+The following features are planned and are not available in the current release:
+
+- Tags for organizing saved replies.
+- Category filtering.
+- Statistics by category.
+- Usage reports.
+- Notes on saved content and sharing.
+- Integration with third-party note-taking tools.
 
 <a id="community-and-contribution"></a>
 ## Community and contribution

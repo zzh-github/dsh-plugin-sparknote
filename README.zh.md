@@ -22,6 +22,7 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 - [实现](#understand-the-implementation)
 - [模型体验](#model-experience)
 - [已知限制与后续工作](#known-limitations-and-deferred-work)
+- [计划功能](#planned-features)
 - [社区与贡献](#community-and-contribution)
 - [开发备注](#dev-note)
 
@@ -45,10 +46,10 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 <a id="use-this-package"></a>
 ## 使用
 
-通过插件页面或 CLI，将提供的 `dsh-reading-collection-0.1.2.tgz` 安装到 Web profile，然后重启该 profile。使用并列的 `DSH` 和 `DSH_plugin/reading-collection` 目录时，在 Harness 源码仓库中运行：
+通过插件页面或 CLI，将提供的 `dsh-reading-collection-0.1.2.tgz` 安装到 Web profile，然后重启该 profile。使用并列的 `DSH` 和 `DSH_plugin/SparkNote` 目录时，在 Harness 源码仓库中运行：
 
 ```sh
-pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh-reading-collection-0.1.2.tgz
+pnpm dsh plugin --profile web add ../DSH_plugin/SparkNote/artifacts/dsh-reading-collection-0.1.2.tgz
 ```
 
 在已完成的回复中选中文字，再选择黄色、绿色、蓝色或粉色。点击已有划线可改色或删除。回复下方的五角星按钮默认会把完整 Markdown、已有划线和对应的用户问题一起收藏。默认标题为“对话名称 · 回复开头”，之后可以重命名。从侧栏打开收藏夹，可搜索回复、已保存的问题与划线，重命名收藏、阅读、编辑划线或打开原对话。收藏中的彩色划线直接显示在回复原文中，也支持跨 Markdown 块的选区；下方“管理划线”默认收起，需要查看摘录或使用管理控件时再展开。取消收藏会保留划线草稿。
@@ -78,6 +79,18 @@ Profile 补丁挂载一个主机插件和对应的浏览器贡献。主机验证
 ## 已知限制与后续工作
 
 收藏前需先在当前对话历史中加载对应的用户问题；暂不复制问题中的附件。未保存问题的旧收藏仍可阅读，并显示提示。仅支持带标准操作行的已完成文字回复。不支持流式生成中的回复、思考过程、图片、自由手绘或跨回复选区。文字高亮需要支持 CSS Custom Highlight 的新版浏览器。DOM 适配器限定于声明的 DSH 版本；桌面端安装尚未验证。其他浏览器窗口在获得焦点时刷新收藏；首版不包含多窗口实时更新和收藏导出。打开来源会返回原对话，不会自动翻页到具体历史消息。
+
+<a id="planned-features"></a>
+## 计划功能
+
+以下功能仍在计划中，当前版本尚未提供：
+
+- 用标签整理收藏。
+- 按分类筛选。
+- 按分类统计。
+- 生成使用报告。
+- 为收藏添加注释并分享。
+- 与第三方笔记工具联动。
 
 <a id="community-and-contribution"></a>
 ## 社区与贡献
