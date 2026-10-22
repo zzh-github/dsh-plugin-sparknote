@@ -7,7 +7,7 @@ description: "Highlight completed DSH replies before collecting their text and a
 
 [中文](README.zh.md) | [English](README.md)
 
-> **Compatibility:** plugin `0.1.2` requires **DSH `0.2.1-rc.2` · Web**.
+> **Compatibility:** plugin `0.1.3` requires **DSH `0.2.1-rc.2` · Web**.
 >
 > `package.json` pins `engines.dsh` to this exact version. Other DSH versions, including newer releases, and Desktop installation have not been verified.
 
@@ -46,10 +46,10 @@ Open a collection to read the saved user question, reply, and colored highlights
 <a id="use-this-package"></a>
 ## Use this package
 
-Install SparkNote `0.1.2` through the Plugins page or run this command for your Web profile, then restart DSH Web:
+Install SparkNote `0.1.3` through the Plugins page or run this command for your Web profile, then restart DSH Web:
 
 ```sh
-dsh plugin --profile web add https://github.com/zzh-github/dsh-plugin-sparknote/releases/download/v0.1.2/dsh-sparknote-0.1.2.tgz
+dsh plugin --profile web add https://github.com/zzh-github/dsh-plugin-sparknote/releases/download/v0.1.3/dsh-sparknote-0.1.3.tgz
 ```
 
 Select text in a completed reply and choose yellow, green, blue, or pink. Click an existing highlight to change or remove it. The five-point star below the reply collects its full Markdown, existing highlights, and the corresponding user question by default. The default title combines the conversation name with the opening of the reply; you can rename it afterward. Open Collection in the sidebar to search reply text, saved questions, and highlights, rename a collection, read, edit highlights, or open the source conversation. Saved replies show colored highlights directly on their original text, including selections across Markdown blocks. The Manage highlights section stays collapsed until you open it to browse quotes or use its controls. Removing a collection keeps its highlight draft.
@@ -100,4 +100,4 @@ This is an independently maintained community plugin. The DSH [contribution guid
 <a id="dev-note"></a>
 ## Dev Note
 
-The `main` branch now uses `sparknote` for its internal plugin ID and storage domain. This change is not in the published v0.1.2 package; a future release will start with an empty collection. Test records from earlier local builds are not migrated.
+Version `0.1.3` uses `sparknote` for its internal plugin ID and storage domain. Collections saved by `v0.1.2` or earlier local builds are not migrated and do not appear in this version.

@@ -1,6 +1,6 @@
 {
   "name": "dsh-sparknote",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Highlight DSH replies while reading and save them with their questions",
   "repository": {
     "type": "git",
