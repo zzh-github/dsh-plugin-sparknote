@@ -1,7 +1,11 @@
 {
-  "name": "dsh-reading-collection",
+  "name": "dsh-sparknote",
   "version": "0.1.2",
-  "description": "Highlight replies while reading and collect them with their annotations",
+  "description": "Highlight DSH replies while reading and save them with their questions",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zzh-github/dsh-plugin-sparknote.git"
+  },
   "type": "module",
   "license": "MIT",
   "packageManager": "pnpm@11.28.5",

@@ -3,7 +3,7 @@ kind: package-bundle
 description: "Highlight completed DSH replies before collecting their text and annotations."
 ---
 
-# Reading Collection
+# SparkNote
 
 [中文](README.zh.md) | [English](README.md)
 
@@ -46,10 +46,10 @@ Open a collection to read the saved user question, reply, and colored highlights
 <a id="use-this-package"></a>
 ## Use this package
 
-Install the supplied `dsh-reading-collection-0.1.2.tgz` through the Plugins page or the CLI for your Web profile, then restart that profile. With sibling `DSH` and `DSH_plugin/SparkNote` directories, run from the Harness checkout:
+Install SparkNote `0.1.2` through the Plugins page or run this command for your Web profile, then restart DSH Web:
 
 ```sh
-pnpm dsh plugin --profile web add ../DSH_plugin/SparkNote/artifacts/dsh-reading-collection-0.1.2.tgz
+dsh plugin --profile web add https://github.com/zzh-github/dsh-plugin-sparknote/releases/download/v0.1.2/dsh-sparknote-0.1.2.tgz
 ```
 
 Select text in a completed reply and choose yellow, green, blue, or pink. Click an existing highlight to change or remove it. The five-point star below the reply collects its full Markdown, existing highlights, and the corresponding user question by default. The default title combines the conversation name with the opening of the reply; you can rename it afterward. Open Collection in the sidebar to search reply text, saved questions, and highlights, rename a collection, read, edit highlights, or open the source conversation. Saved replies show colored highlights directly on their original text, including selections across Markdown blocks. The Manage highlights section stays collapsed until you open it to browse quotes or use its controls. Removing a collection keeps its highlight draft.
@@ -100,4 +100,4 @@ This is an independently maintained community plugin. The DSH [contribution guid
 <a id="dev-note"></a>
 ## Dev Note
 
-None.
+The published package is named `dsh-sparknote`. The internal plugin ID `reading-collection` and storage domain `reading_collection` retain their existing names so previous local data remains addressable.

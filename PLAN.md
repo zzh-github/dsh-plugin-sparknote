@@ -1,4 +1,4 @@
-# Reading Collection development plan
+# SparkNote development plan
 
 Build a shareable DSH bundle for highlighting completed replies before collecting them.
 

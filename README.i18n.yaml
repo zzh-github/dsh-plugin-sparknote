@@ -3,36 +3,36 @@
 /:
   en: 7a5ea56b185fed50
   zh: d712b0ee3d454a0c
-/reading-collection:
-  en: 1f6a0d0e3def7ccb
-  zh: 799595620d362462
-/reading-collection/summary:
+/sparknote:
+  en: 774405188094adf7
+  zh: 386383d2b20ea59b
+/sparknote/summary:
   en: 423593e740cd9455
   zh: c836a2308d973054
-/reading-collection/table-of-contents:
+/sparknote/table-of-contents:
   en: 4be675b27c957585
   zh: d447231c2aa02092
-/reading-collection/screenshots:
+/sparknote/screenshots:
   en: e369038795d399fa
   zh: b806f24fb9b2db3a
-/reading-collection/use-this-package:
-  en: 508d6c9955bb6fe6
-  zh: e0ff904395e71afd
-/reading-collection/understand-the-implementation:
+/sparknote/use-this-package:
+  en: 4e6ae83283df8846
+  zh: 132897e91b3ac950
+/sparknote/understand-the-implementation:
   en: 8057ca79abe479bf
   zh: f3e46f9f4a3b2ec1
-/reading-collection/model-experience:
+/sparknote/model-experience:
   en: 130216ec6aa59920
   zh: 80bfa7e813d7d2aa
-/reading-collection/known-limitations-and-deferred-work:
+/sparknote/known-limitations-and-deferred-work:
   en: 08947cf648d665dd
   zh: f7917ce7bcf5d3ca
-/reading-collection/planned-features:
+/sparknote/planned-features:
   en: 42cee8535b383846
   zh: d9641e73db616d76
-/reading-collection/community-and-contribution:
+/sparknote/community-and-contribution:
   en: d85429850bb64763
   zh: 16a301e0560bf748
-/reading-collection/dev-note:
-  en: b75c8458928b72b9
-  zh: 003ba4e17b4b5269
+/sparknote/dev-note:
+  en: 86914a158f8da9d9
+  zh: 71db3bf59718420f
