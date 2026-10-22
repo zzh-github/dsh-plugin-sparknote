@@ -102,12 +102,12 @@ export function CollectionPanel({ useLibrary, change, load, attach, detach, open
       </section>
       <h2 className="rc-answer-heading">{t('answer')}</h2>
       <Reader record={record} attach={attach} detach={detach} t={t} />
-      {record.highlights.length > 0 && <section className="rc-quotes" aria-label={t('highlights')}><h2>{t('highlights')}</h2>
+      {record.highlights.length > 0 && <details className="rc-quotes"><summary>{t('manageHighlights')} · {record.highlights.length}</summary>
         {record.highlights.map(mark => <div className="rc-quote" key={mark.id}><blockquote data-reading-color={mark.color}>{mark.anchor.quote}</blockquote>
           <ColorButtons t={t} disabled={state.pending > 0} selected={mark.color} apply={color => { void change({ kind: 'recolor', key: recordKey(record), id: mark.id, color }, 'highlighted') }} />
           <Button size="sm" disabled={state.pending > 0} onClick={() => { void change({ kind: 'remove-highlight', key: recordKey(record), id: mark.id }, 'erased') }}>{t('erase')}</Button>
         </div>)}
-      </section>}
+      </details>}
       <Modal open={renaming} title={t('rename')} closeLabel={t('close')} onClose={() => { setRenaming(false) }} footer={<><Button onClick={() => { setRenaming(false) }}>{t('cancel')}</Button><Button variant="primary" disabled={title.trim() === '' || state.pending > 0} onClick={() => { void change({ kind: 'rename', key: recordKey(record), title }, 'renamed').then(ok => { if (ok) setRenaming(false) }) }}>{t('save')}</Button></>}>
         <label className="rc-title-field">{t('title')}<input data-modal-autofocus value={title} maxLength={300} onChange={event => { setTitle(event.target.value) }} /></label>
       </Modal>

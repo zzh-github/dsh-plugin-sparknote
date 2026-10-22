@@ -137,3 +137,16 @@ test('collecting a changed reply does not replace saved question or highlights',
   assert.equal(after.question, undefined)
   assert.equal(after.highlights.length, 1)
 })
+
+
+test('quote restoration tolerates Markdown separator newlines without guessing between repeated passages', () => {
+  const original = 'Before first block.Second block after.'
+  const anchor = makeAnchor(original, 7, 31)
+  const rendered = 'Before first block.\nSecond block after.'
+  const span = resolveAnchor(rendered, anchor)!
+  assert.equal(rendered.slice(span.start, span.end), 'first block.\nSecond block')
+  const multiline = makeAnchor('first block.\r\nSecond block', 0, 26)
+  assert.deepEqual(resolveAnchor('first block.Second block', multiline), { start: 0, end: 24 })
+  assert.equal(resolveAnchor('first\nblock first\nblock', { start: 0, end: 10, quote: 'firstblock', prefix: '', suffix: '' }), undefined)
+  assert.equal(resolveAnchor('ab', { start: 0, end: 3, quote: 'a b', prefix: '', suffix: '' }), undefined)
+})

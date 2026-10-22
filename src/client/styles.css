@@ -49,3 +49,5 @@
 .rc-question h2 { margin: 0 0 12px; font-size: 14px; font-weight: 500; }
 .rc-answer-heading { margin: 0 auto 12px; font-size: 14px; font-weight: 500; }
 .rc-question > p { font-size: 13px; line-height: 1.6; color: var(--dsw-alias-label-secondary); }
+.rc-quotes > summary { cursor: pointer; font-size: 13px; color: var(--dsw-alias-label-secondary); }
+.rc-quotes[open] > summary { margin-bottom: 20px; }

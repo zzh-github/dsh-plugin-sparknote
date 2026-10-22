@@ -42,10 +42,28 @@ export function makeAnchor(text: string, start: number, end: number): Anchor {
   return anchorSchema.parse({ start, end, quote: text.slice(start, end), prefix: text.slice(Math.max(0, start - 40), start), suffix: text.slice(end, end + 40) })
 }
 
-/** Resolve text after Markdown rendering changes; ambiguous matches remain unpainted.
+/** Restore quotes across Markdown separator-newline changes; ambiguous matches remain unpainted.
  * @param text Current rendered text. @param anchor Saved quote and context. @returns Unique matching span, or absence.
  */
 export function resolveAnchor(text: string, anchor: Anchor): { start: number; end: number } | undefined {
+  if (text.includes(anchor.quote)) return resolveQuote(text, anchor)
+  let normalized = ''
+  const offsets: number[] = []
+  for (let index = 0; index < text.length; index++) {
+    const character = text[index]!
+    if (character === '\r' || character === '\n') continue
+    normalized += character
+    offsets.push(index)
+  }
+  const withoutBreaks = (value: string): string => value.replace(/[\r\n]/g, '')
+  const quote = withoutBreaks(anchor.quote)
+  if (quote === '') return undefined
+  const span = resolveQuote(normalized, { quote, prefix: withoutBreaks(anchor.prefix), suffix: withoutBreaks(anchor.suffix) })
+  if (span === undefined) return undefined
+  return { start: offsets[span.start]!, end: offsets[span.end - 1]! + 1 }
+}
+
+function resolveQuote(text: string, anchor: Pick<Anchor, 'quote' | 'prefix' | 'suffix'>): { start: number; end: number } | undefined {
   const matches: { start: number; score: number }[] = []
   let offset = text.indexOf(anchor.quote)
   while (offset !== -1) {

@@ -7,7 +7,7 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 
 [中文](README.zh.md) | [English](README.md)
 
-> **兼容版本：** 插件 `0.1.1` 要求 **DSH `0.2.1-rc.2` · Web 端**。
+> **兼容版本：** 插件 `0.1.2` 要求 **DSH `0.2.1-rc.2` · Web 端**。
 >
 > `package.json` 中的 `engines.dsh` 精确限定此版本。其他 DSH 版本（包括更新版本）及桌面端安装尚未验证。
 
@@ -45,13 +45,13 @@ description: "在 DSH 回复中先划线，再将全文与标记一起收藏。"
 <a id="use-this-package"></a>
 ## 使用
 
-通过插件页面或 CLI，将提供的 `dsh-reading-collection-0.1.1.tgz` 安装到 Web profile，然后重启该 profile。使用并列的 `DSH` 和 `DSH_plugin/reading-collection` 目录时，在 Harness 源码仓库中运行：
+通过插件页面或 CLI，将提供的 `dsh-reading-collection-0.1.2.tgz` 安装到 Web profile，然后重启该 profile。使用并列的 `DSH` 和 `DSH_plugin/reading-collection` 目录时，在 Harness 源码仓库中运行：
 
 ```sh
-pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh-reading-collection-0.1.1.tgz
+pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh-reading-collection-0.1.2.tgz
 ```
 
-在已完成的回复中选中文字，再选择黄色、绿色、蓝色或粉色。点击已有划线可改色或删除。回复下方的五角星按钮默认会把完整 Markdown、已有划线和对应的用户问题一起收藏。默认标题为“对话名称 · 回复开头”，之后可以重命名。从侧栏打开收藏夹，可搜索回复、已保存的问题与划线，重命名收藏、阅读、编辑划线或打开原对话。取消收藏会保留划线草稿。
+在已完成的回复中选中文字，再选择黄色、绿色、蓝色或粉色。点击已有划线可改色或删除。回复下方的五角星按钮默认会把完整 Markdown、已有划线和对应的用户问题一起收藏。默认标题为“对话名称 · 回复开头”，之后可以重命名。从侧栏打开收藏夹，可搜索回复、已保存的问题与划线，重命名收藏、阅读、编辑划线或打开原对话。收藏中的彩色划线直接显示在回复原文中，也支持跨 Markdown 块的选区；下方“管理划线”默认收起，需要查看摘录或使用管理控件时再展开。取消收藏会保留划线草稿。
 
 主机提交成功后，界面才会显示已保存。操作失败会保留已有数据，并提供重试。数据使用 profile 配置的存储提供方，保存在 Harness 主目录下的 `reading_collection` 存储域中。卸载 bundle 会移除界面，不会删除数据。
 
@@ -65,7 +65,7 @@ pnpm dsh plugin --profile web add ../DSH_plugin/reading-collection/artifacts/dsh
 <details>
 <summary>实现细节</summary>
 
-Profile 补丁挂载一个主机插件和对应的浏览器贡献。主机验证仅所有者可调用的 RPC 请求，并按顺序写入带版本的存储记录。浏览器通过 Chat、侧栏、主面板和浮层插槽添加功能。适配当前版本的 DOM 适配器将选区对应到已完成的 Chat 节点，使用 CSS Custom Highlight 绘制，不修改 React 管理的正文。原文摘录和前后文用于在布局变化后定位划线；无法唯一定位时不绘制，已保存的摘录仍可查看。
+Profile 补丁挂载一个主机插件和对应的浏览器贡献。主机验证仅所有者可调用的 RPC 请求，并按顺序写入带版本的存储记录。浏览器通过 Chat、侧栏、主面板和浮层插槽添加功能。适配当前版本的 DOM 适配器将选区对应到已完成的 Chat 节点，使用 CSS Custom Highlight 绘制，不修改 React 管理的正文。原文摘录和前后文用于在布局变化后定位划线，并将 Markdown 分隔换行的差异映射回实际正文位置；无法唯一定位时不绘制，已保存的摘录仍可查看。
 
 </details>
 

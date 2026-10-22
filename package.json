@@ -1,6 +1,6 @@
 {
   "name": "dsh-reading-collection",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Highlight replies while reading and collect them with their annotations",
   "type": "module",
   "license": "MIT",
