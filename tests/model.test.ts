@@ -2,10 +2,10 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { LibraryModel } from '../src/client/model.ts'
-import { sourceSchema, type ReadingRecord } from '../src/schema.ts'
+import { sourceSchema, type SparkNoteRecord } from '../src/schema.ts'
 
 const source = sourceSchema.parse({ sessionId: 'session-one', messageId: 'message-one', nodeKey: 'assistant:1', seq: 7, markdown: 'Reading idea', plainText: 'Reading idea', title: 'Reading idea' })
-const record: ReadingRecord = { ...source, highlights: [], savedAt: 1, updatedAt: 1, revision: 1 }
+const record: SparkNoteRecord = { ...source, highlights: [], savedAt: 1, updatedAt: 1, revision: 1 }
 
 test('a late baseline cannot erase a newer committed collection', async () => {
   let release!: () => void, entered!: () => void
